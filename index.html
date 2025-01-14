@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number Game with Hints</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="number"] {
+            padding: 10px;
+            width: 200px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+    <script>
+        let randomNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        function checkGuess() {
+            const userGuess = Number(document.getElementById('guessInput').value);
+            const result = document.getElementById('result');
+            attempts++;
+
+            if (userGuess === randomNumber) {
+                result.textContent = `🎉 Congratulations! You guessed it right in ${attempts} attempts.`;
+            } else if (userGuess > randomNumber) {
+                result.textContent = '📉 Too high! Try a lower number.';
+                giveHint(userGuess);
+            } else {
+                result.textContent = '📈 Too low! Try a higher number.';
+                giveHint(userGuess);
+            }
+        }
+
+        function giveHint(userGuess) {
+            const hint = document.getElementById('hint');
+            const difference = Math.abs(randomNumber - userGuess);
+
+            if (difference <= 5) {
+                hint.textContent = '🔥 You are very close!';
+            } else if (difference <= 10) {
+                hint.textContent = '✨ You are close!';
+            } else {
+                hint.textContent = '❄️ You are quite far away!';
+            }
+        }
+
+        function resetGame() {
+            randomNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            document.getElementById('guessInput').value = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('hint').textContent = '';
+        }
+    </script>
+</head>
+<body>
+    <h1>Guess the Number Game</h1>
+    <p>Try to guess the number between 1 and 100!</p>
+    <input type="number" id="guessInput" placeholder="Enter your guess">
+    <div>
+        <button onclick="checkGuess()">Submit Guess</button>
+        <button onclick="resetGame()">Reset</button>
+    </div>
+    <p id="result"></p>
+    <p id="hint"></p>
+</body>
+</html>
